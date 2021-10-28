@@ -26,16 +26,22 @@ public class Main {
         String secretKey = Hmac.getSecretKey(8).toString();
 
         System.out.println("HMAC:\n" + Hmac.hmacSha256(args[pcMove - 1],secretKey));
-        System.out.println("Available moves:");
 
-        for (int i = 0; i < args.length; i++){
-            System.out.println(i + 1 + " - " + args[i]);
-        }
-        System.out.println("0 - exit\n? - help");
-
+        String userMove;
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Enter your move:");
-        String userMove = scanner.nextLine();
+        boolean flag = true;
+
+         do {
+            menu(args);
+            userMove = scanner.nextLine();
+             try {
+                 if(userMove.equals("?")) ASCII_table.makeTable(args);
+                 if (!(Integer.parseInt(userMove) > args.length || Integer.parseInt(userMove) < 0)){
+                    flag = false;
+                 }
+             }
+             catch (NumberFormatException errorObj){}
+        }while (flag);
 
         if(userMove.equals("?")){
             ASCII_table.makeTable(args);
@@ -48,5 +54,14 @@ public class Main {
         System.out.println("Computer move:" + args[pcMove - 1]);
         System.out.println(rules.makeWinner(args,pcMove,Integer.parseInt(userMove)));
         System.out.println("HMAC key: " + secretKey);
+    }
+    public static void menu(String[] args){
+        System.out.println("Available moves:");
+        for (int i = 0; i < args.length; i++) {
+            System.out.println(i + 1 + " - " + args[i]);
+        }
+        System.out.println("0 - exit\n? - help");
+        System.out.print("Enter your move:");
+        return;
     }
 }
